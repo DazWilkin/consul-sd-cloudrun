@@ -1,5 +1,7 @@
 # Consul Service Discovery for Cloud Run
 
+[![build](https://github.com/DazWilkin/consul-sd-cloudrun/actions/workflows/build.yaml/badge.svg)](https://github.com/DazWilkin/consul-sd-cloudrun/actions/workflows/build.yaml)
+
 A Consul discovery agent that enumerates Cloud Run services and registers them with Consul.
 
 ## Run
