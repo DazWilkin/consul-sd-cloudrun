@@ -10,7 +10,7 @@ jobs:
     name: consul-sd-cloudrun
     runs-on: ubuntu-20.04
     env:
-      REPO: dazwilkin/consul-sd-cloudrun
+      IMAGE: dazwilkin/consul-sd-cloudrun
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -33,24 +33,22 @@ jobs:
             TOKEN=${{ secrets.GHCR }}
             VERSION=${{ env.VERSION }}
             COMMIT=${{ github.sha }}
-          tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
+          tags: ghcr.io/${{ env.IMAGE }}:${{ github.sha }}
           push: true
-      # - name: revise occurrences of the image
-      #   run: |
-      #     git config --local user.email "action@github.com"
-      #     git config --local user.name "GitHub Actions"
-      #     REPO=$( echo ${{ github.repository }} | awk -F '/' '{print $2}')
-      #     for FILENAME in "./README.md"
-      #     do
-      #       for IMAGE in "ackalctl" "${REPO}-server"
-      #       do
-      #         echo "Replacing: ${IMAGE}"
-      #         sed \
-      #         --in-place \
-      #         "s|${IMAGE}:[0-9a-f]\{40\}|${IMAGE}:${{ github.sha }}|g" \
-      #         ${FILENAME}
-      #         git add ${FILENAME}
-      #       done
-      #     done
-      #     git commit --message "GitHub Actions update image references"
-      #     git push origin master
+      - name: revise occurrences of the image
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Actions"
+
+          for FILENAME in "./README.md" "./docker-compose.yml"
+          do
+            echo "Replacing: ${IMAGE}"
+            sed \
+            --in-place \
+            "s|${IMAGE}:[0-9a-f]\{40\}|${IMAGE}:${{ github.sha }}|g" \
+            ${FILENAME}
+            git add ${FILENAME}
+          done
+
+          git commit --message "GitHub Actions update image references"
+          git push origin master
