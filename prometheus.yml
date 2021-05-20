@@ -1,0 +1,32 @@
+global:
+  scrape_interval: 1m
+  evaluation_interval: 1m
+
+scrape_configs:
+  # Consul
+  - job_name: consul
+    scheme: https
+    consul_sd_configs:
+      - server: consul:8500
+        datacenter: dc1
+        # tags:
+        #   - foo
+    relabel_configs:
+      - action: drop
+        source_labels:
+          - __meta_consul_service_port
+        regex: "8300"
+      - action: labelmap
+        regex: __meta_consul_service_metadata_(.+)
+
+  # Self
+  - job_name: "prometheus-server"
+    static_configs:
+      - targets:
+          - "localhost:9090"
+
+  # cAdvisor exports metrics for *all* containers running on this host
+  - job_name: cadvisor
+    static_configs:
+      - targets:
+          - "cadvisor:8080"
