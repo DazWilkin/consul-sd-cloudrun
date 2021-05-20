@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  discoverer:
+    restart: always
+    image: TBD
+    container_name: discoverer
+
+  consul:
+    restart: always
+    image: consul:1.10.0-beta
+    container_name: consul
+    expose:
+    - "8300" # ???
+    - "8500" # HTTP API|UI
+    ports:
+    - 8300:8300
+    - 8500:8500/tcp
+    - 8600:8600/udp
+
+  prometheus:
+    restart: always
+    depends_on:
+      - consul
+    image: prom/prometheus:v2.26.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-lifecycle
+    volumes:
+      - ${PWD}/prometheus.yml:/etc/prometheus/prometheus.yml
+    expose:
+      - "9090"
+    ports:
+      - 9099:9090
+
+  cadvisor:
+    restart: always
+    image: gcr.io/google-containers/cadvisor:v0.36.0
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      # Default location
+      # - "/var/lib/docker/:/var/lib/docker:ro"
+      # Snap location
+      - "/var/snap/docker/current:/var/lib/docker:ro"
+    expose:
+      - "8080"
+    ports:
+      - 8089:8080
+    
