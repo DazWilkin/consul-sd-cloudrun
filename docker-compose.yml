@@ -3,8 +3,14 @@ version: "3"
 services:
   discoverer:
     restart: always
-    image: TBD
+    image: ghcr.io/dazwilkin/consul-sd-cloudrun:9eaa840013cb0ba3fc2369e1df99a80bbce01ad5
     container_name: discoverer
+    command:
+    - --project_ids=project1,project2,...
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/client_secrets.json
+    volumes:
+      - /home/userid/.config/gcloud/application_default_credentials.json:/secrets/client_secrets.json
 
   consul:
     restart: always
@@ -48,4 +54,3 @@ services:
       - "8080"
     ports:
       - 8089:8080
-    
