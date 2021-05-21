@@ -10,10 +10,6 @@ import (
 	"google.golang.org/api/run/v1"
 )
 
-const (
-	labelLocation = "cloud.googleapis.com/location"
-)
-
 // Service is a type that represents a generic service
 // It is the canonical form for Cloud Run and Consul services
 type Service struct {
@@ -46,20 +42,21 @@ func (s *Service) FromConsul(consulService *api.AgentService) error {
 
 // FromRun is a method that converts a Cloud Run service into a Service
 func (s *Service) FromRun(runService *run.Service) error {
-	region, err := getRegion(runService.Metadata.Labels)
-	if err != nil {
-		return err
-	}
-
 	var meta = make(map[string]string)
 	// Represents the GCP Project number (not ID)
 	meta["project_number"] = runService.Metadata.Namespace
-	meta["region"] = region
 
-	// Because Cloud Run labels are key-value
-	// Mapping these to Consul Meta key-values rather than Tags []string{}
-	for k, v := range runService.Metadata.Labels {
-		meta[k] = v
+	// Extract Cloud Run labels
+	// Replacing the system-defined label cloud.googleapis.com/location as region
+	// Ignoring any other DNS-like labels
+	for key, val := range runService.Metadata.Labels {
+		if key == "cloud.googleapis.com/location" {
+			meta["region"] = val
+		}
+		// Avoid `.` and `/` as these are permitted by Cloud Run but aren't permitted by Consul as Tag keys
+		if !strings.ContainsAny(key, "./") {
+			meta[key] = val
+		}
 	}
 
 	// Populate Service fields
