@@ -1,6 +1,8 @@
 # Consul Service Discovery for Cloud Run
 
 [![build](https://github.com/DazWilkin/consul-sd-cloudrun/actions/workflows/build.yaml/badge.svg)](https://github.com/DazWilkin/consul-sd-cloudrun/actions/workflows/build.yaml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/DazWilkin/consul-sd-cloudrun.svg)](https://pkg.go.dev/github.com/DazWilkin/consul-sd-cloudrun)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dazwilkin/consul-sd-cloudrun)](https://goreportcard.com/report/github.com/dazwilkin/consul-sd-cloudrun)
 
 A Consul discovery agent that enumerates Cloud Run services and registers them with Consul.
 
