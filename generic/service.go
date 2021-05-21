@@ -73,16 +73,3 @@ func (s *Service) FromRun(runService *run.Service) error {
 func (s *Service) String() string {
 	return fmt.Sprintf("Name: %s, Meta: %v, Tags: %v, Address: %s, Port: %d", s.Name, s.Meta, s.Tags, s.Address, s.Port)
 }
-
-// getRegion is a function that extracts the location label from a Cloud Run service
-// The Cloud Run service adds the following label to each service's metadata to identify the region
-// Consul does not permit `.` and `/` to appear in its metadata labels
-// labels:
-//   cloud.googleapis.com/location: us-west1
-func getRegion(m map[string]string) (string, error) {
-	region := m[labelLocation]
-	if region == "" {
-		return "", fmt.Errorf("unable to extract GCP region for service labels")
-	}
-	return region, nil
-}
