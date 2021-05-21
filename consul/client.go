@@ -27,12 +27,12 @@ func NewClient(address string, log logr.Logger) (*Client, error) {
 		client: client,
 	}, nil
 }
-func (c *Client) List() (map[string]*generic.Service, error) {
+func (c *Client) List(filter string) (map[string]*generic.Service, error) {
 	log := c.log.WithName("List")
 
-	items, err := c.client.Agent().Services()
+	items, err := c.client.Agent().ServicesWithFilter(filter)
 	if err != nil {
-		log.Error(err, "unable to retrieve list of Consul services")
+		log.Error(err, "unable to retrieved filtered list of Consul services")
 		return nil, err
 	}
 

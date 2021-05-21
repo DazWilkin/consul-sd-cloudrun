@@ -29,6 +29,7 @@ var (
 
 var (
 	consulEndpoint = flag.String("consul", "", "Endpoint of Consul service")
+	consulFilter   = flag.String("filter", "", "Consul Filter expression applied to refine Consul service query")
 	projectIDs     = flag.String("project_ids", "", "Comma-separated list of GCP Project IDs")
 	frequency      = flag.Duration("frequency", 15*time.Second, "Frequency of polling Projects for Cloud Run services")
 )
@@ -78,8 +79,8 @@ func main() {
 			log.Error(err, "unable to list Cloud Run services for project")
 		}
 
-		// Determine current list of Consul services
-		haves, err := consulClient.List()
+		// Determine filtered list of Consul services
+		haves, err := consulClient.List(*consulFilter)
 		if err != nil {
 			log.Error(err, "unable to retrieve list of Consul services")
 			return
