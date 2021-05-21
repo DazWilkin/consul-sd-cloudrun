@@ -51,4 +51,4 @@ jobs:
           done
 
           git commit --message "GitHub Actions update image references"
-          git push origin master
+          git push origin main
