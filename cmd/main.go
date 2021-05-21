@@ -39,15 +39,24 @@ func main() {
 
 	flag.Parse()
 
+	if *consulEndpoint == "" {
+		log.Info("`--consul` is a required flag.")
+		return
+	}
 	if *projectIDs == "" {
 		// Nothing to do
 		log.Info("No `--project_ids` provided. Nothing to do!")
 		return
 	}
-	log.Info("Projects", "projectIDs", *projectIDs)
-	log.Info("Frequency", "frequency", *frequency)
 
-	// Convert comma-separated list into slice
+	log.Info("Flags",
+		"consulEndpoint", *consulEndpoint,
+		"consulFilter", *consulFilter,
+		"projectIDs", *projectIDs,
+		"frequency", *frequency,
+	)
+
+	// Convert comma-separated list of Project IDs into a slice of Project IDs
 	projectIDs := strings.Split(*projectIDs, ",")
 
 	// Create Cloud Run client
@@ -61,19 +70,24 @@ func main() {
 	consulClient, err := consul.NewClient(*consulEndpoint, log)
 	if err != nil {
 		log.Error(err, "unable to create Consul client")
+		return
 	}
 
+	// Create ticker
+	ticker := time.NewTicker(*frequency)
+
 	// Repeat forever
-	for {
+	for ; true; <-ticker.C {
 		// Reset log
 		log := log
 
-		// Determine start time in order to calculate remaining time at end of loop
+		// Start
 		start := time.Now()
 		log.Info("Enumerating Projects",
 			"start", start,
 		)
 
+		// List Cloud Run services across Project IDs
 		wants, err := cloudrunClient.List(projectIDs)
 		if err != nil {
 			log.Error(err, "unable to list Cloud Run services for project")
@@ -87,7 +101,8 @@ func main() {
 		}
 
 		// Compare the two
-		// if we want it but don't have it, add it
+
+		// if we have the Cloud Run service but don't have it in Consul, add it to Consul
 		for key, want := range wants {
 			log.Info("Wants",
 				"key", key,
@@ -106,7 +121,7 @@ func main() {
 			}
 		}
 
-		// if we have it but don't want it, delete it
+		// if we have it in Consul but don't have the Cloud Run service, delete it from Consul
 		for key := range haves {
 			log.Info("Haves",
 				"key", key,
@@ -120,14 +135,12 @@ func main() {
 			}
 		}
 
-		// Sleep remainder of time until next frequency
-		remaining := *frequency - time.Since(start)
-		if remaining < 0 {
-			remaining = 0
-		}
-		log.Info("Sleeping",
-			"remaining", remaining,
+		// Done
+		end := time.Now()
+		log.Info("Done Enumerating Projects",
+			"start", start,
+			"end", end,
+			"duration", end.Sub(start),
 		)
-		time.Sleep(remaining)
 	}
 }
