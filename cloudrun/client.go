@@ -14,11 +14,13 @@ import (
 	"google.golang.org/api/run/v1"
 )
 
+// Client is a type that represents a Google Cloud Run API service
 type Client struct {
 	log    logr.Logger
 	client *run.APIService
 }
 
+// NewClient is a function that returns a new Client
 func NewClient(log logr.Logger) (*Client, error) {
 	ctx := context.Background()
 	cloudrunService, err := run.NewService(ctx)
@@ -32,6 +34,9 @@ func NewClient(log logr.Logger) (*Client, error) {
 	}, nil
 }
 
+// List is a method that queries a list of Google Cloud Platform projects for Cloud Run services
+// It returns a map comprising service ID and generic.Service
+// The ID is a hash of the service's URL|Endpoint
 func (c *Client) List(projectIDs []string) (map[string]*generic.Service, error) {
 	log := c.log.WithName("List")
 
@@ -92,7 +97,8 @@ func (c *Client) List(projectIDs []string) (map[string]*generic.Service, error) 
 	return services, nil
 }
 
-// Parent is a function that returns the correct parent value for the Cloud Run services list method
+// Parent is a function that returns the parent value for the Cloud Run services list method
+// The parent value is a combination of `namespaces/` and the Google Cloud Platform Project ID
 func Parent(project string) string {
 	return fmt.Sprintf("namespaces/%s", project)
 }

@@ -14,6 +14,8 @@ const (
 	labelLocation = "cloud.googleapis.com/location"
 )
 
+// Service is a type that represents a generic service
+// It is the canonical form for Cloud Run and Consul services
 type Service struct {
 	Name    string
 	Meta    map[string]string
@@ -22,10 +24,16 @@ type Service struct {
 	Port    int
 }
 
+// ID is a method that calculates a unique ID for a service
+// It uses the service's Address:Port
+// The service's Address:Port is assumed to be unique across all services
 func (s *Service) ID() string {
-	x := sha256.Sum224([]byte(s.Address))
+	endpoint := fmt.Sprintf("%s:%d", s.Address, s.Port)
+	x := sha256.Sum224([]byte(endpoint))
 	return fmt.Sprintf("%x", x[:])
 }
+
+// FromConsul is a method that converts a Consul service into a Service
 func (s *Service) FromConsul(consulService *api.AgentService) error {
 	s.Name = consulService.ID
 	s.Meta = consulService.Meta
@@ -35,6 +43,8 @@ func (s *Service) FromConsul(consulService *api.AgentService) error {
 
 	return nil
 }
+
+// FromRun is a method that converts a Cloud Run service into a Service
 func (s *Service) FromRun(runService *run.Service) error {
 	region, err := getRegion(runService.Metadata.Labels)
 	if err != nil {
@@ -55,12 +65,18 @@ func (s *Service) FromRun(runService *run.Service) error {
 
 	return nil
 }
+
+// String is a method that converts a Service into a string
 func (s *Service) String() string {
 	return fmt.Sprintf("Name: %s, Meta: %v, Tags: %v, Address: %s, Port: %d", s.Name, s.Meta, s.Tags, s.Address, s.Port)
 }
+
+// getRegion is a function that extracts the location label from a Cloud Run service
+// The Cloud Run service adds the following label to each service's metadata to identify the region
+// Consul does not permit `.` and `/` to appear in its metadata labels
+// labels:
+//   cloud.googleapis.com/location: us-west1
 func getRegion(m map[string]string) (string, error) {
-	// labels:
-	//   cloud.googleapis.com/location: us-west1
 	region := m[labelLocation]
 	if region == "" {
 		return "", fmt.Errorf("unable to extract GCP region for service labels")

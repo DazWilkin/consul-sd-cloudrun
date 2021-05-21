@@ -8,11 +8,13 @@ import (
 	"github.com/go-logr/logr"
 )
 
+// Client is a type that represents a Consul client
 type Client struct {
 	log    logr.Logger
 	client *api.Client
 }
 
+// NewClient is a function that returns a new Client
 func NewClient(address string, log logr.Logger) (*Client, error) {
 	client, err := api.NewClient(&api.Config{
 		Address: address,
@@ -27,6 +29,10 @@ func NewClient(address string, log logr.Logger) (*Client, error) {
 		client: client,
 	}, nil
 }
+
+// List is a method that returns a filtered list of Consul services
+// It returns a map comprising service ID and generic.Service
+// The ID is a hash of the service's URL|Endpoint
 func (c *Client) List(filter string) (map[string]*generic.Service, error) {
 	log := c.log.WithName("List")
 
@@ -55,6 +61,10 @@ func (c *Client) List(filter string) (map[string]*generic.Service, error) {
 
 	return services, nil
 }
+
+// Create is a method that creates a Consul service
+// It returns the service's ID or an error
+// The ID is a hash of the service's URL|Endpoint
 func (c *Client) Create(service *generic.Service) (string, error) {
 	log := c.log.WithName("Create")
 	log = log.WithValues(
@@ -76,6 +86,9 @@ func (c *Client) Create(service *generic.Service) (string, error) {
 		Port:    service.Port,
 	})
 }
+
+// Get is a method that retrieves a Consul service
+// It uses the service's ID to identify the service
 func (c *Client) Get(ID string) (*generic.Service, error) {
 	log := c.log.WithName("Get")
 	log = log.WithValues(
@@ -96,6 +109,9 @@ func (c *Client) Get(ID string) (*generic.Service, error) {
 		Port:    service.Port,
 	}, nil
 }
+
+// Delete is a method that deletes a Consul service
+// It uses the service's ID to identify the service
 func (c *Client) Delete(ID string) error {
 	log := c.log.WithName("Delete")
 	log = log.WithValues(
