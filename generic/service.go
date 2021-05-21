@@ -59,11 +59,17 @@ func (s *Service) FromRun(runService *run.Service) error {
 		}
 	}
 
+	// Remove the prefixing `https://` and the suffixing `/` from the Cloud Run address
+	// The protocol is for convenience when setting this as a target in Prometheus
+	// The trailing `/` is to permit a valid endpoint to be created from Address:Port
+	address := strings.TrimPrefix(runService.Status.Url, "https://")
+	address = strings.TrimSuffix(address, "/")
+
 	// Populate Service fields
 	s.Name = runService.Metadata.Name
 	s.Meta = meta
 	s.Tags = []string{}
-	s.Address = strings.TrimPrefix(runService.Status.Url, "https://")
+	s.Address = address
 	s.Port = 443
 
 	return nil
