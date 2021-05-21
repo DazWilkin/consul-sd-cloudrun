@@ -7,7 +7,7 @@ services:
     container_name: discoverer
     command:
     - --consul=consul:8500
-    - --project_ids=project1,project2,...
+    - --project_ids=...
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/secrets/client_secrets.json
     volumes:
@@ -18,10 +18,8 @@ services:
     image: consul:1.10.0-beta
     container_name: consul
     expose:
-    - "8300" # ???
     - "8500" # HTTP API|UI
     ports:
-    - 8300:8300
     - 8500:8500/tcp
     - 8600:8600/udp
 
@@ -30,6 +28,7 @@ services:
     depends_on:
       - consul
     image: prom/prometheus:v2.26.0
+    container_name: prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.enable-lifecycle
@@ -38,11 +37,12 @@ services:
     expose:
       - "9090"
     ports:
-      - 9099:9090
+      - 9090:9090
 
   cadvisor:
     restart: always
     image: gcr.io/google-containers/cadvisor:v0.36.0
+    container_name: cadvisor
     volumes:
       - "/:/rootfs:ro"
       - "/var/run:/var/run:rw"
