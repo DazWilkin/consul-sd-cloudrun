@@ -68,6 +68,11 @@ func (c *Client) List(projectIDs []string) (map[string]*generic.Service, error) 
 					log.Error(err, "unable to convert Cloud Run service")
 					return nil, err
 				}
+
+				// To avoid losing it, include Project ID in service metadata
+				// The Cloud Run service retains the Project number as part of the Namespace name
+				service.Meta["project_id"] = projectID
+
 				ID := service.ID()
 				services[ID] = service
 			}
