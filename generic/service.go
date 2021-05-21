@@ -56,6 +56,12 @@ func (s *Service) FromRun(runService *run.Service) error {
 	meta["project_number"] = runService.Metadata.Namespace
 	meta["region"] = region
 
+	// Because Cloud Run labels are key-value
+	// Mapping these to Consul Meta key-values rather than Tags []string{}
+	for k, v := range runService.Metadata.Labels {
+		meta[k] = v
+	}
+
 	// Populate Service fields
 	s.Name = runService.Metadata.Name
 	s.Meta = meta
