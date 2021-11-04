@@ -6,6 +6,10 @@
 
 A Consul discovery agent that enumerates Cloud Run services and registers them with Consul.
 
+## Image
+
++ ghcr.io/dazwilkin/consul-sd-cloudrun:6b09841fe8c257c7eb80d72caf1bd1ad9df4dc1c
+
 ## Run
 
 ### Docker (Compose)
