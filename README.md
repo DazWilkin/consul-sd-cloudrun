@@ -38,7 +38,7 @@ podman run \
 --name=discoverer \
 --volume=${HOME}/.config/gcloud/application_default_credentials.json:/secrets/adc.json \
 --env=GOOGLE_APPLICATION_CREDENTIALS=/secrets/adc.json \
-ghcr.io/dazwilkin/consul-sd-cloudrun:6b09841fe8c257c7eb80d72caf1bd1ad9df4dc1c \
+ghcr.io/dazwilkin/consul-sd-cloudrun:f106b3b362a02861df03eddc0da59a0826a04b09 \
 --consul=localhost:8500 \
 --project_ids=${PROJECT}
 ```
