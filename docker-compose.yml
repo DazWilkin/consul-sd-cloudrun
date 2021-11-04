@@ -15,7 +15,7 @@ services:
 
   consul:
     restart: always
-    image: consul:1.10.0-beta
+    image: consul:1.11.0-beta
     container_name: consul
     expose:
     - "8500" # HTTP API|UI
@@ -27,7 +27,7 @@ services:
     restart: always
     depends_on:
       - consul
-    image: prom/prometheus:v2.26.0
+    image: prom/prometheus:v2.31.0
     container_name: prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
