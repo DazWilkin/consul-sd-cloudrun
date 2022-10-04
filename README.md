@@ -6,7 +6,13 @@
 
 A Consul discovery agent that enumerates Cloud Run services and registers them with Consul.
 
+## Image
+
++ ghcr.io/dazwilkin/consul-sd-cloudrun:60164c8e2d7c53f43053e9f6cfbd1535e59bb689
+
 ## Run
+
+### Docker (Compose)
 
 Run Consul, Prometheus and cAdvisor:
 
@@ -14,7 +20,34 @@ Run Consul, Prometheus and cAdvisor:
 docker-compose up
 ```
 
-Then:
+### Podman
+
+```bash
+POD="consul-pod"
+
+podman pod create \
+--name=${POD} \
+--publish=8500:8500/tcp \
+--publish=8600:8600/udp 
+
+podman run \
+--detach --rm --tty \
+--pod=${POD} \
+--name=consul \
+docker.io/consul:1.11.0-beta
+
+podman run \
+--detach --rm --tty \
+--pod=${POD} \
+--name=discoverer \
+--volume=${HOME}/.config/gcloud/application_default_credentials.json:/secrets/adc.json \
+--env=GOOGLE_APPLICATION_CREDENTIALS=/secrets/adc.json \
+ghcr.io/dazwilkin/consul-sd-cloudrun:60164c8e2d7c53f43053e9f6cfbd1535e59bb689 \
+--consul=localhost:8500 \
+--project_ids=${PROJECT}
+```
+
+### Discoverer only
 
 ```bash
 # Use user's default account

@@ -1,7 +1,7 @@
-ARG GOLANG_VERSION=1.16.4
+ARG GOLANG_VERSION=1.19
 ARG GOLANG_OPTIONS="CGO_ENABLED=0 GOOS=linux GOARCH=amd64"
 
-FROM golang:${GOLANG_VERSION} as build
+FROM docker.io/golang:${GOLANG_VERSION} as build
 
 ARG VERSION
 ARG COMMIT
@@ -26,6 +26,8 @@ RUN env ${GOLANG_OPTIONS} \
     ./cmd
 
 FROM gcr.io/distroless/base-debian10
+
+LABEL org.opencontainers.image.source https://github.com/DazWilkin/consul-sd-cloudrun
 
 COPY --from=build /go/bin/discoverer /
 
