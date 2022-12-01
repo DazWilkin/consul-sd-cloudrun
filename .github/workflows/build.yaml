@@ -8,7 +8,7 @@ on:
 jobs:
   ackal:
     name: consul-sd-cloudrun
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       IMAGE: dazwilkin/consul-sd-cloudrun
     steps:
