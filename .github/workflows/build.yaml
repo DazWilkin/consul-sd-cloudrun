@@ -8,7 +8,7 @@ on:
 jobs:
   ackal:
     name: consul-sd-cloudrun
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       IMAGE: dazwilkin/consul-sd-cloudrun
     steps:
@@ -25,7 +25,7 @@ jobs:
       - name: Get kernel version
         run: echo "VERSION=$(uname --kernel-release)" >> ${GITHUB_ENV}
       - name: discoverer
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
