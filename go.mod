@@ -3,7 +3,7 @@ module github.com/dazwilkin/consul-sd-cloudrun
 go 1.20
 
 require (
-	github.com/go-logr/logr v1.2.3
+	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/stdr v1.2.2
 	github.com/hashicorp/consul/api v1.19.1
 	google.golang.org/api v0.111.0
