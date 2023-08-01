@@ -25,7 +25,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     ./cmd
 
 
-FROM gcr.io/distroless/static
+FROM gcr.io/distroless/static-debian11:nonroot
 
 LABEL org.opencontainers.image.source https://github.com/DazWilkin/consul-sd-cloudrun
 
