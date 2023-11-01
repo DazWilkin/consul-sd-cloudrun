@@ -8,7 +8,7 @@ A Consul discovery agent that enumerates Cloud Run services and registers them w
 
 ## Image
 
-+ ghcr.io/dazwilkin/consul-sd-cloudrun:2de19805b7b85deff28ee8e984a75c76e565790d
++ ghcr.io/dazwilkin/consul-sd-cloudrun:88e287880b1d5ad3d2ede585646fb75b411f97f3
 
 ## Run
 
@@ -42,7 +42,7 @@ podman run \
 --name=discoverer \
 --volume=${HOME}/.config/gcloud/application_default_credentials.json:/secrets/adc.json \
 --env=GOOGLE_APPLICATION_CREDENTIALS=/secrets/adc.json \
-ghcr.io/dazwilkin/consul-sd-cloudrun:2de19805b7b85deff28ee8e984a75c76e565790d \
+ghcr.io/dazwilkin/consul-sd-cloudrun:88e287880b1d5ad3d2ede585646fb75b411f97f3 \
 --consul=localhost:8500 \
 --project_ids=${PROJECT}
 ```
