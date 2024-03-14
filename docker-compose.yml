@@ -3,7 +3,7 @@ version: "3"
 services:
   discoverer:
     restart: always
-    image: ghcr.io/dazwilkin/consul-sd-cloudrun:cf1b0af987cc1a14c460adc89ad3d0022956f225
+    image: ghcr.io/dazwilkin/consul-sd-cloudrun:8bdfe0a3a45138c26826377c16f508241dc4cc55
     container_name: discoverer
     command:
     - --consul=consul:8500
