@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/stdr v1.2.2
-	github.com/hashicorp/consul/api v1.28.2
+	github.com/hashicorp/consul/api v1.29.1
 	google.golang.org/api v0.177.0
 )
 
