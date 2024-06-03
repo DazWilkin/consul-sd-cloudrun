@@ -1,4 +1,4 @@
-ARG GOLANG_VERSION=1.20
+ARG GOLANG_VERSION=1.22.0
 
 FROM docker.io/golang:${GOLANG_VERSION} as build
 

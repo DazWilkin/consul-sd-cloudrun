@@ -1,6 +1,6 @@
 module github.com/dazwilkin/consul-sd-cloudrun
 
-go 1.21
+go 1.22.0
 
 require (
 	github.com/go-logr/logr v1.4.2
