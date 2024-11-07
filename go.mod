@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/stdr v1.2.2
-	github.com/hashicorp/consul/api v1.29.4
+	github.com/hashicorp/consul/api v1.30.0
 	google.golang.org/api v0.204.0
 )
 
