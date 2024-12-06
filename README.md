@@ -10,6 +10,24 @@ A Consul discovery agent that enumerates Cloud Run services and registers them w
 
 + ghcr.io/dazwilkin/consul-sd-cloudrun:b7e928555c71ea78fbc6c158a23c0a4971bffb49
 
+## [Sigstore](https://www.sigstore.dev/)
+
+`consul-sd-cloudrun` container images are being signed by Sigstore and may be verified:
+
+```bash
+cosign verify \
+--key=./cosign.pub \
+ghcr.io/dazwilkin/consul-sd-cloudrun:b7e928555c71ea78fbc6c158a23c0a4971bffb49
+```
+
+> **NOTE** `cosign.pub` may be downloaded [here](./cosign.pub)
+
+To install cosign, e.g.:
+
+```bash
+go install github.com/sigstore/cosign/cmd/cosign@latest
+```
+
 ## Run
 
 ### Docker (Compose)
