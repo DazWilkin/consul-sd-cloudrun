@@ -8,7 +8,7 @@ A Consul discovery agent that enumerates Cloud Run services and registers them w
 
 ## Image
 
-+ ghcr.io/dazwilkin/consul-sd-cloudrun:1e96e021fca43e8925b3fb7509609797dcbd3007
++ `ghcr.io/dazwilkin/consul-sd-cloudrun:1e96e021fca43e8925b3fb7509609797dcbd3007`
 
 ## [Sigstore](https://www.sigstore.dev/)
 
