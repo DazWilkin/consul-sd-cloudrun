@@ -3,7 +3,7 @@ ARG GOLANG_VERSION=1.23.0
 ARG TARGETOS
 ARG TARGETARCH
 
-FROM -platform=${TARGETARCH} docker.io/golang:${GOLANG_VERSION} AS build
+FROM --platform=${TARGETARCH} docker.io/golang:${GOLANG_VERSION} AS build
 
 WORKDIR /project
 
