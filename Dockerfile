@@ -1,9 +1,9 @@
 ARG GOLANG_VERSION=1.23.0
 
-FROM docker.io/golang:${GOLANG_VERSION} as build
+ARG TARGETOS
+ARG TARGETARCH
 
-ARG VERSION
-ARG COMMIT
+FROM -platform=${TARGETARCH} docker.io/golang:${GOLANG_VERSION} AS build
 
 WORKDIR /project
 
@@ -17,7 +17,13 @@ COPY cloudrun cloudrun
 COPY consul consul
 COPY generic generic
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+ARG TARGETOS
+ARG TARGETARCH
+
+ARG VERSION
+ARG COMMIT
+
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build \
     -ldflags "-X 'main.BuildTime=${BUILD_TIME}' -X 'main.GitCommit=${COMMIT}' -X 'main.OSVersion=${VERSION}'" \
     -a -installsuffix cgo \
@@ -25,9 +31,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     ./cmd
 
 
-FROM gcr.io/distroless/static-debian11:nonroot
+FROM --platform=${TARGETARCH} gcr.io/distroless/static-debian11:nonroot
 
-LABEL org.opencontainers.image.source https://github.com/DazWilkin/consul-sd-cloudrun
+LABEL org.opencontainers.image.source="https://github.com/DazWilkin/consul-sd-cloudrun"
 
 COPY --from=build /go/bin/discoverer /
 
