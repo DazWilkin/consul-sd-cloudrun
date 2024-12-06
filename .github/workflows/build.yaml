@@ -54,8 +54,8 @@ jobs:
           --annotations="commit=${{ github.sha }}" \
           --annotations="version=${{ env.VERSION }}" \
           ghcr.io/${{ env.IMAGE }}@${DIGEST}
-          env:
-            COSIGN_PASSWORD: ""
+        env:
+          COSIGN_PASSWORD: ""
       - name: revise occurrences of the image
         run: |
           git config --local user.email "action@github.com"
