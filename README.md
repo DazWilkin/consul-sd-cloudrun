@@ -8,7 +8,7 @@ A Consul discovery agent that enumerates Cloud Run services and registers them w
 
 ## Image
 
-+ `ghcr.io/dazwilkin/consul-sd-cloudrun:c2e92da1e92d3111e5f154d901c35cccba2cbdf3`
++ `ghcr.io/dazwilkin/consul-sd-cloudrun:3239ad70b998f917fa0a7248ba748d9a1f611468`
 
 ## [Sigstore](https://www.sigstore.dev/)
 
@@ -17,7 +17,7 @@ A Consul discovery agent that enumerates Cloud Run services and registers them w
 ```bash
 cosign verify \
 --key=./cosign.pub \
-ghcr.io/dazwilkin/consul-sd-cloudrun:c2e92da1e92d3111e5f154d901c35cccba2cbdf3
+ghcr.io/dazwilkin/consul-sd-cloudrun:3239ad70b998f917fa0a7248ba748d9a1f611468
 ```
 
 > **NOTE** `cosign.pub` may be downloaded [here](./cosign.pub)
@@ -60,7 +60,7 @@ podman run \
 --name=discoverer \
 --volume=${HOME}/.config/gcloud/application_default_credentials.json:/secrets/adc.json \
 --env=GOOGLE_APPLICATION_CREDENTIALS=/secrets/adc.json \
-ghcr.io/dazwilkin/consul-sd-cloudrun:c2e92da1e92d3111e5f154d901c35cccba2cbdf3 \
+ghcr.io/dazwilkin/consul-sd-cloudrun:3239ad70b998f917fa0a7248ba748d9a1f611468 \
 --consul=localhost:8500 \
 --project_ids=${PROJECT}
 ```
