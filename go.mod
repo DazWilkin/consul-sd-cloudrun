@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/stdr v1.2.2
-	github.com/hashicorp/consul/api v1.31.2
+	github.com/hashicorp/consul/api v1.32.0
 	google.golang.org/api v0.228.0
 )
 
