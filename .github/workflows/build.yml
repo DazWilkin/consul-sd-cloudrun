@@ -1,10 +1,17 @@
 name: build
-
 on:
   push:
     branches:
       - main
-
+    paths-ignore:
+      - '**.md'
+      - '**.json'
+      - '**.jsonnet'
+      - '**.key'
+      - '**.pub'
+      - '**.sh'
+      - '**.yaml'
+      - '**.yml'
 jobs:
   golangci:
     name: lint
@@ -19,9 +26,10 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.1.0
+          version: latest
   consul-sd-cloudrun:
     name: consul-sd-cloudrun
+    needs: golangci
     runs-on: ubuntu-latest
     env:
       IMAGE: dazwilkin/consul-sd-cloudrun
