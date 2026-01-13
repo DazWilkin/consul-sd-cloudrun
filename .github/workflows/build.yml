@@ -61,6 +61,8 @@ jobs:
             COMMIT=${{ github.sha }}
           tags: ghcr.io/${{ env.IMAGE }}:${{ github.sha }}
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Install Cosign
         uses: sigstore/cosign-installer@main
       - name: Write signing key to disk (only needed for `cosign sign --key`)
