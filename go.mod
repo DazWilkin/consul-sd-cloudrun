@@ -1,11 +1,11 @@
 module github.com/dazwilkin/consul-sd-cloudrun
 
-go 1.25.5
+go 1.25.7
 
 require (
 	github.com/go-logr/logr v1.4.3
 	github.com/go-logr/stdr v1.2.2
-	github.com/hashicorp/consul/api v1.33.2
+	github.com/hashicorp/consul/api v1.33.4
 	google.golang.org/api v0.269.0
 )
 
