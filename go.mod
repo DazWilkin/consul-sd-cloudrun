@@ -6,7 +6,7 @@ require (
 	github.com/go-logr/logr v1.4.3
 	github.com/go-logr/stdr v1.2.2
 	github.com/hashicorp/consul/api v1.33.5
-	google.golang.org/api v0.272.0
+	google.golang.org/api v0.273.1
 )
 
 require (
